@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VaiperX ULTRA PRO</title>
     
-    <!-- ส่วนสำคัญ: ตั้งค่าไอคอนสำหรับหน้าจอหลัก (iOS Home Screen Icon) -->
+    <!-- แท็กไอคอนสำหรับ iOS (iPhone/iPad) -->
     <link rel="apple-touch-icon" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
     <link rel="apple-touch-icon-precomposed" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
+    
+    <!-- แท็กไอคอนสำหรับ Android และ Browser ทั่วไป -->
+    <link rel="shortcut icon" type="image/png" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
+    
+    <!-- แท็กสำหรับบังคับให้ระบบจำรูปภาพ (Social & System) -->
+    <meta property="og:image" content="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="VaiperX">
@@ -126,7 +133,6 @@
     <canvas id="lightningCanvas"></canvas>
 
     <div class="content-wrap">
-        <!-- รูปโปรไฟล์ในแอป -->
         <img src="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png" class="profile-img">
         
         <div class="header">
@@ -177,6 +183,7 @@
         </div>
 
         <div class="footer">
+            <!-- เชื่อมต่อ Potatso -->
             <a href="potatso://" class="btn-inject" id="mainBtn">Activate Protection</a>
             <div class="status">ENCRYPTED CONNECTION : <span style="color:#00ff88">ON</span></div>
         </div>
@@ -184,97 +191,40 @@
 </div>
 
 <script>
-    // 1. ระบบสายฟ้าผ่าภายในหน้าต่าง
+    // 1. ระบบสายฟ้าผ่า
     const canvas = document.getElementById('lightningCanvas');
     const ctx = canvas.getContext('2d');
     const windowEl = document.querySelector('.window');
-
-    function resizeCanvas() {
-        canvas.width = windowEl.offsetWidth;
-        canvas.height = windowEl.offsetHeight;
-    }
+    function resizeCanvas() { canvas.width = windowEl.offsetWidth; canvas.height = windowEl.offsetHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
-
     function drawLightning() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         let x = Math.random() * canvas.width;
         let y = 0;
-        ctx.strokeStyle = '#ff0033';
-        ctx.lineWidth = 2;
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = '#ff0033';
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        while (y < canvas.height) {
-            x += (Math.random() - 0.5) * 50;
-            y += Math.random() * 30;
-            ctx.lineTo(x, y);
-        }
+        ctx.strokeStyle = '#ff0033'; ctx.lineWidth = 2; ctx.shadowBlur = 15; ctx.shadowColor = '#ff0033';
+        ctx.beginPath(); ctx.moveTo(x, y);
+        while (y < canvas.height) { x += (Math.random() - 0.5) * 50; y += Math.random() * 30; ctx.lineTo(x, y); }
         ctx.stroke();
-        if(Math.random() > 0.6) {
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
         setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 100);
     }
-
-    function thunderLoop() {
-        setTimeout(() => {
-            drawLightning();
-            if(Math.random() > 0.8) setTimeout(drawLightning, 80); 
-            thunderLoop();
-        }, Math.random() * 3000 + 1000);
-    }
+    function thunderLoop() { setTimeout(() => { drawLightning(); thunderLoop(); }, Math.random() * 3000 + 1000); }
     thunderLoop();
 
-    // 2. Interaction Logic
+    // 2. Interaction
     const mainBtn = document.getElementById('mainBtn');
     mainBtn.onclick = function() {
         this.innerText = "System Loading...";
-        this.style.background = "#222";
-        this.style.color = "#fff";
-        setTimeout(() => {
-            this.innerText = "System Active";
-            this.style.background = "#00ff88";
-            this.style.boxShadow = "0 0 30px rgba(0, 255, 136, 0.4)";
-        }, 2000);
+        setTimeout(() => { this.innerText = "System Active"; this.style.background = "#00ff88"; }, 2000);
     };
 
-    // 3. Ultra Security Protection
+    // 3. ระบบป้องกันการเจาะโค้ด (Ultra Security)
     document.addEventListener('contextmenu', e => e.preventDefault());
-
-    document.onkeydown = function(e) {
-        if (
-            e.keyCode === 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-            (e.ctrlKey && e.keyCode === 85) || 
-            (e.ctrlKey && e.keyCode === 83)    
-        ) {
-            return false;
-        }
-    };
-
+    document.onkeydown = function(e) { if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || (e.ctrlKey && e.keyCode === 85)) return false; };
     setInterval(function() {
-        const startTime = performance.now();
-        debugger; 
-        const endTime = performance.now();
-        if (endTime - startTime > 100) {
-            document.body.innerHTML = `
-                <div style="background:#000; color:red; height:100vh; display:flex; align-items:center; justify-content:center; font-family:sans-serif; text-align:center; position:fixed; top:0; left:0; width:100%; z-index:9999;">
-                    <div>
-                        <h1>SECURITY BREACH DETECTED</h1>
-                        <p>Access Denied. Your IP has been logged.</p>
-                    </div>
-                </div>
-            `;
-        }
+        const startTime = performance.now(); debugger; const endTime = performance.now();
+        if (endTime - startTime > 100) { document.body.innerHTML = '<div style="background:#000; color:red; height:100vh; display:flex; align-items:center; justify-content:center; font-family:sans-serif; text-align:center;"><h1>SECURITY BREACH DETECTED</h1></div>'; }
     }, 1000);
-
-    document.querySelectorAll('img').forEach(img => {
-        img.onmousedown = () => false;
-    });
 </script>
 
 </body>
