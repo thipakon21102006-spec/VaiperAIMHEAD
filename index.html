@@ -3,74 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VaiperX Aimbot</title>
+    <title>VaiperX ULTRA PRO</title>
     
-    <link rel="apple-touch-icon" href="https://img2.pic.in.th/IMG_5305b940159297273f22.jpeg">
+    <!-- App Icon สำหรับ iOS -->
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/jpeg" href="https://img2.pic.in.th/IMG_5305b940159297273f22.jpeg">
 
     <style>
-        /* [CSS เดิมของคุณทั้งหมด] */
-        :root { --bg-body: #050505; --bg-panel: rgba(18, 18, 20, 0.95); --accent: #ff0033; --text-main: #ffffff; --border: rgba(255, 255, 255, 0.08); }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; } /* กันลากคลุมตัวหนังสือ */
-        body { background-color: var(--bg-body); font-family: -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; color: var(--text-main); overflow: hidden; }
-        .window { width: 90%; max-width: 340px; background: var(--bg-panel); backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.8); padding: 25px; text-align: center; }
-        .profile-img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 15px; box-shadow: 0 0 15px var(--accent); object-fit: cover; }
-        .header h1 { margin: 0; font-size: 22px; letter-spacing: 1px; }
-        .header p { margin: 5px 0 20px; font-size: 10px; color: var(--accent); letter-spacing: 2px; font-weight: bold; }
-        .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; }
-        .switch { position: relative; width: 40px; height: 20px; }
+        :root {
+            --bg-body: #050507;
+            --bg-panel: rgba(13, 13, 17, 0.98);
+            --accent: #ff0033;
+            --accent-glow: rgba(255, 0, 51, 0.4);
+            --text-main: #f0f0f0;
+            --text-dim: #707075;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.06);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+        
+        body { 
+            background-color: var(--bg-body); 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; color: var(--text-main); 
+            overflow: hidden;
+            background-image: radial-gradient(circle at center, #1a0505 0%, #050507 100%);
+        }
+
+        .window { 
+            width: 90%; max-width: 360px; 
+            background: var(--bg-panel); 
+            backdrop-filter: blur(40px);
+            border-radius: 35px; 
+            border: 1px solid var(--card-border); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8); 
+            padding: 35px 25px; text-align: center;
+            position: relative; 
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        #lightningCanvas {
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; 
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .content-wrap { position: relative; z-index: 5; }
+
+        .profile-img { 
+            width: 95px; height: 95px; border-radius: 28px;
+            border: 1px solid var(--accent); 
+            margin-bottom: 15px; 
+            box-shadow: 0 10px 20px var(--accent-glow);
+            object-fit: cover;
+        }
+
+        .header h1 { 
+            margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+            background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { margin: 5px 0 30px; font-size: 10px; color: var(--accent); letter-spacing: 4px; font-weight: 700; text-transform: uppercase; }
+
+        .menu-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+        
+        .row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 16px 20px; 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            border: 1px solid var(--card-border);
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .row:hover { border-color: rgba(255, 0, 51, 0.3); background: rgba(255, 255, 255, 0.05); }
+
+        .label-group { display: flex; align-items: center; gap: 12px; }
+        .icon-box {
+            width: 32px; height: 32px; 
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 0, 51, 0.1);
+            border-radius: 10px; color: var(--accent);
+        }
+        .row span { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+        .switch { position: relative; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #333; transition: .3s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; transition: .3s; border-radius: 50%; }
+        .slider { 
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+            background: #252529; transition: .4s; border-radius: 30px; 
+        }
+        .slider:before { 
+            position: absolute; content: ""; height: 18px; width: 18px; 
+            left: 3px; bottom: 3px; background: #ececec; transition: .4s; border-radius: 50%; 
+        }
         input:checked + .slider { background: var(--accent); }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .btn-inject { display: block; width: 100%; padding: 16px; background: linear-gradient(135deg, #ff0033 0%, #880000 100%); border: none; border-radius: 15px; color: white; font-weight: bold; text-decoration: none; box-shadow: 0 8px 20px rgba(255, 0, 51, 0.3); }
-        .status { margin-top: 15px; font-size: 10px; color: #00ff88; }
+        input:checked + .slider:before { transform: translateX(20px); background: #fff; }
+
+        .btn-inject { 
+            display: block; width: 100%; padding: 20px; 
+            background: #fff; 
+            border: none; border-radius: 22px; color: #000; font-weight: 800; 
+            text-decoration: none; font-size: 15px;
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+        .btn-inject:active { transform: scale(0.96); }
+
+        .status { margin-top: 20px; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <div class="window">
-    <img src="https://img2.pic.in.th/IMG_5305b940159297273f22.jpeg" class="profile-img">
-    <div class="header">
-        <h1>VaiperX Aimbot</h1>
-        <p>V1.0 ANTI-DETECTED</p>
-    </div>
-    <div class="content">
-        <div class="row"><span>ยิงตัวโดนหัว</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-        <div class="row"><span>ล็อคเป้าดูดหัว</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
-        <div class="row"><span>ระบบกันแบน</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-    </div>
-    <div class="footer">
-        <a href="potatso://" class="btn-inject">INJECT SCRIPT</a>
-        <div class="status">● PROTECTED SYSTEM</div>
+<body oncontextmenu="return false;">
+
+<div class="window">
+    <canvas id="lightningCanvas"></canvas>
+
+    <div class="content-wrap">
+        <img src="https://i.postimg.cc/dtPNnP5B/1208970E-0281-4988-A5EE-6B8EBF602D01.png" class="profile-img">
+        
+        <div class="header">
+            <h1>VaiperX ULTRA</h1>
+            <p>Thunder Protection</p>
+        </div>
+        
+        <div class="menu-list">
+            <div class="row">
+                <div class="label-group">
+                    <div class="icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+                    </div>
+                    <span>ยิงตัวโดนหัว</span>
+                </div>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="row">
+                <div class="label-group">
+                    <div class="icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15a7 7 0 0 0 14 0"></path><path d="M2 9v3a10 10 0 0 0 20 0V9"></path><path d="M12 2v4"></path></svg>
+                    </div>
+                    <span>ระบบดูดหัว</span>
+                </div>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="row">
+                <div class="label-group">
+                    <div class="icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <span>ระบบกันแบน</span>
+                </div>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+
+            <div class="row">
+                <div class="label-group">
+                    <div class="icon-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    </div>
+                    <span>กันรหัสติดดำ</span>
+                </div>
+                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="potatso://" class="btn-inject" id="mainBtn">Activate Protection</a>
+            <div class="status">ENCRYPTED CONNECTION : <span style="color:#00ff88">ON</span></div>
+        </div>
     </div>
 </div>
 
 <script>
-    // 1. กันคลิกขวา
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    // 1. ระบบสายฟ้าผ่าภายในหน้าต่าง
+    const canvas = document.getElementById('lightningCanvas');
+    const ctx = canvas.getContext('2d');
+    const windowEl = document.querySelector('.window');
 
-    // 2. กันปุ่ม F12, Ctrl+Shift+I, Ctrl+U (ดู Source), Ctrl+Shift+J (Console)
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123) { return false; } // F12
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
-        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+    function resizeCanvas() {
+        canvas.width = windowEl.offsetWidth;
+        canvas.height = windowEl.offsetHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawLightning() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let x = Math.random() * canvas.width;
+        let y = 0;
+        ctx.strokeStyle = '#ff0033';
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#ff0033';
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        while (y < canvas.height) {
+            x += (Math.random() - 0.5) * 50;
+            y += Math.random() * 30;
+            ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        if(Math.random() > 0.6) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
+        setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 100);
+    }
+
+    function thunderLoop() {
+        setTimeout(() => {
+            drawLightning();
+            if(Math.random() > 0.8) setTimeout(drawLightning, 80); 
+            thunderLoop();
+        }, Math.random() * 3000 + 1000);
+    }
+    thunderLoop();
+
+    // 2. Interaction Logic
+    const mainBtn = document.getElementById('mainBtn');
+    mainBtn.onclick = function() {
+        this.innerText = "System Loading...";
+        this.style.background = "#222";
+        this.style.color = "#fff";
+        setTimeout(() => {
+            this.innerText = "System Active";
+            this.style.background = "#00ff88";
+            this.style.boxShadow = "0 0 30px rgba(0, 255, 136, 0.4)";
+        }, 2000);
     };
 
-    // 3. ดักจับถ้ามีการเปิด DevTools จะทำการลบหน้าเว็บทิ้งหรือ Refresh
-    setInterval(function(){
-        var before = new Date().getTime();
-        debugger;
-        var after = new Date().getTime();
-        if (after - before > 100) { // ถ้าหยุดที่ debugger นานเกินไป (เปิด DevTools อยู่)
-            document.querySelector('body').innerHTML = '<h1 style="color:red; text-align:center; margin-top:50px;">SECURITY BREACH: Access Denied!</h1>';
+    // 3. Ultra Security Protection
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    document.onkeydown = function(e) {
+        if (
+            e.keyCode === 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+            (e.ctrlKey && e.keyCode === 85) || 
+            (e.ctrlKey && e.keyCode === 83)    
+        ) {
+            return false;
+        }
+    };
+
+    setInterval(function() {
+        const startTime = performance.now();
+        debugger; 
+        const endTime = performance.now();
+        if (endTime - startTime > 100) {
+            document.body.innerHTML = `
+                <div style="background:#000; color:red; height:100vh; display:flex; align-items:center; justify-content:center; font-family:sans-serif; text-align:center; position:fixed; top:0; left:0; width:100%; z-index:9999;">
+                    <div>
+                        <h1>SECURITY BREACH DETECTED</h1>
+                        <p>Access Denied. Your IP has been logged.</p>
+                    </div>
+                </div>
+            `;
         }
     }, 1000);
 
-    // 4. กันลากรูป
     document.querySelectorAll('img').forEach(img => {
         img.onmousedown = () => false;
     });
