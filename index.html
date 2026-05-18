@@ -125,9 +125,63 @@
         .btn-inject:active { transform: scale(0.96); }
 
         .status { margin-top: 20px; font-size: 10px; color: var(--text-dim); letter-spacing: 2px; }
+
+        /* ==================== ป๊อปอัปแจ้งเตือนคำเตือนสำหรับเข้าครั้งแรก ==================== */
+        .warning-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 9999;
+            display: none; /* ควบคุมการแสดงผลผ่าน JavaScript */
+            justify-content: center; align-items: center;
+        }
+        .warning-box {
+            width: 90%; max-width: 340px;
+            background: #0d0d11;
+            border: 2px solid var(--accent);
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.5);
+            animation: popupAnim 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popupAnim {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .warning-title {
+            color: var(--accent); font-size: 24px; font-weight: 900; 
+            margin: 0 0 15px 0; letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 0, 51, 0.6);
+        }
+        .warning-text {
+            color: #ff3355; font-size: 15px; font-weight: 700; 
+            line-height: 1.6; margin-bottom: 25px;
+            word-break: break-word;
+        }
+        .btn-warning-close {
+            display: inline-block; width: 100%; padding: 14px;
+            background: var(--accent); color: #fff;
+            border: none; border-radius: 15px; font-weight: 800;
+            font-size: 14px; text-transform: uppercase; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 0, 51, 0.4);
+            transition: 0.2s;
+        }
+        .btn-warning-close:active { transform: scale(0.96); }
     </style>
 </head>
 <body oncontextmenu="return false;">
+
+<!-- ส่วนของกล่องป๊อปอัปแจ้งเตือนเตือนภัยครั้งแรก -->
+<div class="warning-overlay" id="firstTimeWarning">
+    <div class="warning-box">
+        <div class="warning-title">⚠️ SYSTEM WARNING</div>
+        <div class="warning-text">
+            ไอพวกใช้ของฟรีมึงระวังโดนกูดูดเงินหรือไวรัสเข้าเครื่องเพราะกูดูได้หมดว่าใครเข้าฟรีหรือซื้อมา
+        </div>
+        <button class="btn-warning-close" id="closeWarningBtn">รับทราบและยอมรับความเสี่ยง</button>
+    </div>
+</div>
 
 <div class="window">
     <canvas id="lightningCanvas"></canvas>
@@ -191,6 +245,23 @@
 </div>
 
 <script>
+    // ตรวจสอบการเข้าใช้งานครั้งแรกสำหรับการแสดงกล่องข้อความเตือน
+    document.addEventListener("DOMContentLoaded", function() {
+        const warningOverlay = document.getElementById('firstTimeWarning');
+        const closeBtn = document.getElementById('closeWarningBtn');
+        
+        // เช็คว่าเคยบันทึกค่าไว้ในเครื่องหรือยัง
+        if (!localStorage.getItem('vaiperx_warned')) {
+            warningOverlay.style.display = 'flex'; // แสดงป๊อปอัปหากเป็นครั้งแรก
+        }
+
+        // เมื่อกดปิดป๊อปอัป ให้บันทึกค่าและซ่อนข้อความลงไป
+        closeBtn.onclick = function() {
+            localStorage.setItem('vaiperx_warned', 'true');
+            warningOverlay.style.display = 'none';
+        }
+    });
+
     // 1. ระบบสายฟ้าผ่า
     const canvas = document.getElementById('lightningCanvas');
     const ctx = canvas.getContext('2d');
